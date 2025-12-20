@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Load static Folder -->
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="{% static 'CSS/registration_style.css' %}" />
+
+  <!-- Bootstrap CSS Link -->
+  <link rel="stylesheet" href="{% static 'Resources\bootstrap-5.3.8-dist\css\bootstrap.min.css' %}" />
+  <script src="{% static 'Resources\bootstrap-5.3.8-dist\js\bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Font Awesome Link -->
+  <link rel="stylesheet" href="{% static 'Resources/fontawesome-free-7.1.0-web/css/all.min.css' %}" />
+  <script src="{% static 'Resources\fontawesome-free-7.1.0-web\js\all.min.js' %}"></script>
+
+  <!-- Login JS -->
+  <script src="{% static 'JS/login.js'%}"></script>
+
+  <title>Sign Up Jimiboard</title>
+</head>
+
+<body>
+  <div class="login-box shadow-sm rounded-3 p-2">
+    <div class="login-header d-flex justify-content-center align-items-center gap-3 p-1">
+      <div class="web-logo fs-1 d-flex justify-content-center align-items-center bg-dark text-white">
+        J
+      </div>
+      <span class="web-name fs-2">Jimiboard</span>
+    </div>
+
+    <div class="login-form">
+      <div class="text-center">
+        <p><b>Welcome back!</b> Please enter your details</p>
+      </div>
+      <form action="" method="post">
+        {% csrf_token %}
+
+        <div class="input-emailornumber p-1 m-2">
+          <input type="text" class="login-input w-100 p-2" id="mORem" name="mORem" placeholder="Mobile number or email"
+            required autofocus />
+          <p id="errorMsg"
+            style="color: rgba(212, 14, 14, 0.705) !important; font-size: smaller !important; font-family: inherit !important; font-weight: 500 !important;">
+          </p>
+        </div>
+
+        <div class="continue-btn p-1 m-2">
+          <button type="submit" class="btn w-100 rounded-3 p-2" id="continue" name="continue" value="continue" disabled>
+            Continue
+          </button>
+        </div>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span>or explore with</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <div class="googlewithsign p-1 m-2">
+          <a href="" class="google-btn p-2 fs-6">
+            <img src="{% static 'Images/google-icon.png' %}" class="google-icon" alt="Google" />
+            <span>Sign in with Google</span>
+          </a>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="code-verification d-none">
+      <div class="text-center">
+        <p>Check your&nbsp;<span class="checkMobileAndEmail"></span>and enter the verification code sent
+          to&nbsp;<b id="checkCountryCode"></b>&nbsp;<b id="numberAndEmail"></b></p>
+      </div>
+
+      <div class="code-container p-1 m-1" id="codeContainer">
+        <input type="text" class="code-input m-1" id="codeInput" placeholder="enter code" autofocus />
+      </div>
+
+      <!-- <div class="d-flex justify-content-between">
+        <button type="button" id="back-btn" class="btn btn-outline-dark w-100 p-1 m-2">Back</button>
+        <button type="submit" id="verify-btn" class="btn btn-dark w-100 p-1 m-2" disabled>Verify OTP</button>
+      </div> -->
+
+      <div class="text-center m-1">
+        <button id="back-btn" class="btn btn-link">Edit the&nbsp;<span class="checkMobileAndEmail"></span>?</button>
+      </div>
+
+      <div class="text-center m-1">
+        <button id="resent-code-link" class="btn btn-link">Resend code?</button>
+      </div>
+    </div>
+
+    <div class="user-profile d-none">
+      <div class="user-avatar-container d-flex justify-content-center align-items-center">
+        <div class="user-avatar position-relative">
+          <img id="avatarPreview" src="{% static 'Images/avatar.jpg' %}" class="shadow-sm" alt="User Avatar">
+          <!-- Upload Button -->
+          <label for="avatarInput"
+            class="avatar-upload-btn d-flex justify-content-center align-items-center position-absolute bottom-0 end-0">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+          <input type="file" id="avatarInput" accept="image/*" hidden />
+        </div>
+      </div>
+
+      <!-- -------------User Avatar---------- -->
+      <script>
+        document.getElementById("avatarInput").addEventListener("change", function () {
+          const file = this.files[0];
+          if (file) {
+            document.getElementById("avatarPreview").src = URL.createObjectURL(file);
+          }
+        });
+      </script>
+
+      <div class="input-username p-1 m-2">
+        <input type="text" class="login-input w-100 p-2" id="username" name="username" placeholder="Username" />
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="button" onclick="homepage();" id="skip-btn"
+          class="btn btn-outline-dark w-100 p-1 m-2">Skip</button>
+        <button type="submit" onclick="homepage();" id="continue-btn"
+          class="btn btn-dark w-100 p-1 m-2">Continue</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginForm = document.querySelector(".login-form");
+      const input = document.getElementById("mORem");
+      const btnCon = document.getElementById("continue");
+      const error = document.getElementById("errorMsg");
+      const phoneRegex = /^[6-9][0-9]{9}$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const dangerousPattern = /[<>{}()'"`;/\\]/;
+      const numberAndEmail = document.getElementById("numberAndEmail");
+      const checkCountryCode = document.getElementById("checkCountryCode");
+      const checkMobileAndEmail = document.getElementsByClassName("checkMobileAndEmail");
+
+      const otpVerification = document.querySelector(".code-verification");
+      const codeInput = document.getElementById("codeInput");
+      const backBtn = document.getElementById("back-btn");
+      // const verifyBtn = document.getElementById("verify-btn");
+
+      const userProfile = document.querySelector(".user-profile");
+      const skipBtn = document.getElementById("skip-btn");
+      const continueBtn = document.getElementById("continue-btn");
+
+
+      input.addEventListener("input", function (e) {
+        e.preventDefault();
+        let value = input.value.trim();
+
+        btnCon.disabled = true;
+        error.textContent = "";
+
+        if (dangerousPattern.test(value)) {
+          error.textContent = "• Invalid characters detected!";
+          return;
+        }
+
+        if (/\s/.test(value)) {
+          error.textContent = "• Spaces are not allowed.";
+          return;
+        }
+
+        if (/^\d+$/.test(value)) {
+          if (!phoneRegex.test(value)) {
+            error.textContent = "• Enter a valid 10-digit mobile number starting with 6-9.";
+            return;
+          }
+          error.textContent = "";
+          btnCon.disabled = false;
+          return;
+        }
+
+        if (value.includes("@")) {
+          if (value.endsWith(".com")) {
+            error.textContent = "";
+            btnCon.disabled = false;
+            return;
+          }
+          error.textContent = "• Enter a valid email address.";
+          return;
+        }
+
+        error.textContent = "• Enter valid mobile number or email.";
+      });
+
+      codeInput.addEventListener("paste", function (e) {
+        e.preventDefault();
+        const pasteData = e.clipboardData.getData("text").trim();
+        // const pasteData = window.clipboardData.getData("text").trim();
+        const regex =
+          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,}$/;
+
+        if (regex.test(pasteData)) {
+          codeInput.value = pasteData;
+        }
+      });
+
+      btnCon.addEventListener("click", function (e) {
+        e.preventDefault();
+        let value = input.value.trim();
+
+        const ok = confirm(`Confirm to send OTP to this ${value}`);
+        if (ok) {
+          numberAndEmail.textContent = value;
+
+          setTimeout(() => {
+            loginForm.classList.add('d-none');
+            otpVerification.classList.remove('d-none');
+          }, 1000);
+
+
+          const isEmail = value.includes('@');
+          checkCountryCode.textContent = isEmail ? "" : "+91";
+
+          for (let i = 0; i < checkMobileAndEmail.length; i++) {
+            checkMobileAndEmail[i].textContent = isEmail ? "email" : "mobile number";
+          }
+        }
+      });
+
+      backBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        setTimeout(() => {
+          loginForm.classList.remove('d-none');
+          otpVerification.classList.add('d-none');
+        }, 1000);
+      });
+
+      // verifyBtn.addEventListener("click", function (e) {
+      //   e.preventDefault();
+      //   setTimeout(() => {
+      //     otpVerification.classList.add('d-none');
+      //     userProfile.classList.remove('d-none');
+      //   }, 1000);
+      // });
+    });
+
+    function homepage() {
+      window.location.href = "/";
+    }
+
+  </script>
+</body>
+
+</html>
