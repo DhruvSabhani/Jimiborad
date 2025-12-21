@@ -54,6 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "jimiboard.urls"
+AUTH_USER_MODEL = "board.User"
 
 TEMPLATES = [
     {
