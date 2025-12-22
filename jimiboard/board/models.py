@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from board.manage import UserManage
 
 # Create your models here.
 
@@ -40,7 +39,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "emailID"
     REQUIRED_FIELDS = []
-    objects = UserManage()
 
     def __str__(self):
         return self.emailID or self.phoneNumber or str(self.id)
