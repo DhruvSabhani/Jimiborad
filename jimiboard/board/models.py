@@ -15,19 +15,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     emailID_code = models.CharField(
         null=True, max_length=10, blank=True, verbose_name="Email_ID Code"
     )
-    country_code = models.CharField(
+    countryCode = models.CharField(
         null=True, max_length=10, blank=True, verbose_name="Country Code"
     )
-    phone_number = models.CharField(
+    phoneNumber = models.CharField(
         null=True, max_length=20, blank=True, verbose_name="Phone number"
     )
-    phone_number_code = models.CharField(
+    phoneNumber_code = models.CharField(
         max_length=10, null=True, blank=True, verbose_name="Phone number Code"
     )
     username = models.CharField(
         null=True, blank=True, max_length=255, verbose_name="Username"
     )
-    user_img = models.ImageField(
+    userImg = models.ImageField(
         upload_to="Images/", null=True, blank=True, verbose_name="User Image"
     )
     created_at = models.DateTimeField(
@@ -43,4 +43,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManage()
 
     def __str__(self):
-        return self.emailID or self.phone_number or str(self.id)
+        return self.emailID or self.phoneNumber or str(self.id)
