@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from .manage import UserManage
 
 # Create your models here.
 
@@ -9,7 +10,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     emailID = models.EmailField(
-        null=True, max_length=20, unique=True, blank=True, verbose_name="Email ID"
+        null=True, max_length=255, unique=True, blank=True, verbose_name="Email ID"
     )
     emailID_code = models.CharField(
         null=True, max_length=10, blank=True, verbose_name="Email_ID Code"
@@ -37,8 +38,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         null=True, blank=True, verbose_name="Last_logout DateTime"
     )
 
-    USERNAME_FIELD = "emailID"
+    USERNAME_FIELD = "id"
     REQUIRED_FIELDS = []
+    objects = UserManage()
 
     def __str__(self):
         return self.emailID or self.phoneNumber or str(self.id)
