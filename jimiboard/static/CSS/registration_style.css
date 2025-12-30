@@ -1,26 +1,72 @@
 * {
   padding: 0 !important;
   margin: 0 !important;
+  overflow: hidden !important;
   transition: all 0.1s ease !important;
 }
 
-body {
-  background-image: url("/static/Images/background_image.jpg") !important;
-  background-repeat: no-repeat !important;
-  background-size: cover !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  min-height: 80vh !important;
+/* Left side : slider box */
+.slider-box {
+  width: 100% !important;
+  height: 98vh !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  position: relative !important;
 }
 
-/* -------------Login Box---------- */
-
-.login-box {
-  width: 400px !important;
-  background-color: rgba(255, 255, 255, 0.877) !important;
+/* Image wrapper */
+.slider-img {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
 }
 
+/* Image fit perfectly */
+.slider-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: fill !important;
+  display: block !important;
+}
+
+.slider-caption .slider-caption-title h1 {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  position: absolute !important;
+  left: 20px !important;
+  right: 20px !important;
+  bottom: 120px !important;
+}
+
+.slider-caption .slider-caption-summaries h5 {
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  position: absolute !important;
+  left: 20px !important;
+  right: 20px !important;
+  bottom: 50px !important;
+}
+
+/* Slider Caption Box */
+.slider-caption {
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.65),
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0)
+  ) !important;
+  border-radius: 0.75rem !important;
+}
+
+/* Right side : Login Box */
+/* Remove Brand link  */
+.brand-link {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+/* website logo */
 .web-logo {
   width: 60px !important;
   height: 60px !important;
@@ -28,35 +74,41 @@ body {
   border-radius: 50% !important;
   font-weight: 600 !important;
 }
-
+/* website name  */
 .web-name {
   font-family: Poppins, Arial, sans-serif !important;
   font-weight: 600 !important;
 }
-
-.login-form div p,
-.code-verification div p {
+/* Login title */
+.login-title {
+  font-size: 25px !important;
+  font-family: Poppins, Arial, sans-serif !important;
+}
+/* Login form styles  */
+.login-form .input-emailornumber .form-label,
+.code-verification .input-code .form-label {
   color: rgba(0, 0, 0, 0.705) !important;
-  font-size: smaller !important;
+  /* font-size: smaller !important; */
   font-family: inherit !important;
   font-weight: 500 !important;
 }
-
 .input-emailornumber .login-input,
-.input-username .login-input {
-  font-size: 16px !important;
+.code-verification .login-input,
+.user-profile .input-username .login-input {
+  font-size: 18px !important;
   font-family: "Poppins", Arial, sans-serif !important;
   background: #ffffff !important;
-  border: 0px solid #e5e7eb !important;
+  border: 2px solid #0000008c !important;
   border-radius: 12px !important;
   outline: none !important;
 }
-
-/* Placeholder style */
+/* Placeholder */
 .input-emailornumber .login-input::placeholder,
-.input-username .login-input::placeholder {
+.code-verification .login-input::placeholder,
+.user-profile .input-username .login-input::placeholder {
   color: #9ca3af !important;
   font-weight: 400 !important;
+  font-family: inherit !important;
 }
 
 .continue-btn button {
@@ -73,6 +125,24 @@ body {
   color: black !important;
   border: 1px solid black !important;
 }
+/* loder button */
+.loader {
+  width: 40px !important;
+  height: 40px !important;
+  border: 8px solid #f3f3f3 !important;
+  border-top: 8px solid black !important;
+  border-radius: 50% !important;
+  animation: spin 0.5s linear infinite !important;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 /* Creative Divider */
 .divider {
@@ -87,7 +157,7 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    #e2e8f0,
+    #00000033,
     transparent
   ) !important;
   position: relative !important;
@@ -104,7 +174,7 @@ body {
   background: linear-gradient(
     90deg,
     transition,
-    #667eea,
+    #e2e8f0,
     transition
   ) !important;
 }
@@ -143,60 +213,13 @@ body {
   height: 20px !important;
 }
 
-/* -------------OTP Verification---------- */
-/* .code-verification div p{} */
-
-.code-container {
-  display: flex !important;
-  justify-content: center !important;
-  /* gap: 10px !important; */
-}
-
-.code-input {
-  /* width: 40px !important; */
-  /* height: 40px !important; */
-  text-align: center !important;
-  font-size: 20px !important;
-  border: 0 !important;
-  background-color: transparent !important;
-  border-bottom: 1px solid #ccc !important;
-  outline: none !important;
-}
-
-#back-btn,
-#verify-btn,
-#skip-btn,
-#continue-btn {
-  font-size: 17px !important;
-  font-family: "Poppins", Arial, sans-serif !important;
-  outline: none !important;
-  border-radius: 12px !important;
-}
-
-#verify-btn:hover,
-#continue-btn:hover {
-  background-color: transparent !important;
-  color: black !important;
-  border: 1px solid black !important;
-}
-
-#resent-code-link,
-#back-btn {
-  font-size: small !important;
+#resent-code-link {
+  font-size: 16px !important;
   font-family: "Poppins", Arial, sans-serif !important;
   font-weight: 700 !important;
-  color: rgb(121, 8, 8) !important;
+  text-decoration: none !important;
+  color: rgba(0, 0, 0, 0.521) !important;
 }
-
-.disabled {
-  pointer-events: none !important;
-  /* opacity: 0.5 !important; */
-}
-
-/* -------------User Profile---------- */
-/* .input-username .login-input */
-/* .input-username .login-input::placeholder */
-/* #continue-btn:hover */
 
 .user-avatar img {
   width: 120px !important;
@@ -219,4 +242,89 @@ body {
 
 .avatar-upload-btn:hover {
   background: black !important;
+}
+
+#skip-btn,
+#continue-btn {
+  font-size: 17px !important;
+  font-family: "Poppins", Arial, sans-serif !important;
+  outline: none !important;
+}
+
+#continue-btn:hover {
+  background-color: transparent !important;
+  color: black !important;
+  border: 1px solid black !important;
+}
+
+/* Screen reader support enabled. */
+
+@media only screen and (max-width: 900px) {
+  #left-side {
+    position: fixed !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100vw !important;
+    z-index: -1 !important;
+  }
+
+  /* Image fit perfectly */
+  .slider-img img {
+    filter: blur(3px) !important;
+  }
+
+  .slider-caption .slider-caption-title h1 {
+    font-size: 2.4rem !important;
+    bottom: 200px !important;
+  }
+
+  .slider-caption .slider-caption-summaries h5 {
+    bottom: 130px !important;
+  }
+
+  /* Login title */
+  .login-title {
+    font-size: 30px !important;
+    color: white !important;
+  }
+
+  .login-form .input-emailornumber .form-label,
+  .code-verification .input-code .form-label {
+    color: white !important;
+  }
+
+  .input-emailornumber .login-input,
+  .code-verification .login-input,
+  .user-profile .input-username .login-input {
+    background: #ffffffd1 !important;
+    border: 0px solid #0000008c !important;
+  }
+
+  .continue-btn button:hover {
+    color: white !important;
+    border: 2px solid white !important;
+    font-weight: 600 !important;
+  }
+
+  .divider-line {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #ffffff,
+      transparent
+    ) !important;
+  }
+
+  .divider span,
+  #resent-code-link {
+    color: white !important;
+    font-size: 15px !important;
+  }
+
+  .google-btn {
+    background: #ffffffe8 !important;
+    border: 0px solid #ffffff !important;
+    color: #000 !important;
+  }
 }

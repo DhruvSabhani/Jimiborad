@@ -7,4 +7,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("", views.Index, name="Home Page"),
     path("login/", views.SignUp, name="Registration Page"),
+    path("verify-code/", views.verify_code, name="verify_code"),
+    path("my-profile/", views.my_profile, name="my_profile"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

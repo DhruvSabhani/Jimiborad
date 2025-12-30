@@ -1,250 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Load static Folder -->
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <!-- Load static Folder -->
-  {% load static %}
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="{% static 'CSS/registration_style.css' %}" />
 
-  <!-- CSS Link -->
-  <link rel="stylesheet" href="{% static 'CSS/registration_style.css' %}" />
+    <!-- Bootstrap CSS Link -->
+    <link rel="stylesheet" href="{% static 'Resources\bootstrap-5.3.8-dist\css\bootstrap.min.css' %}" />
+    <script src="{% static 'Resources\bootstrap-5.3.8-dist\js\bootstrap.bundle.min.js' %}"></script>
 
-  <!-- Bootstrap CSS Link -->
-  <link rel="stylesheet" href="{% static 'Resources\bootstrap-5.3.8-dist\css\bootstrap.min.css' %}" />
-  <script src="{% static 'Resources\bootstrap-5.3.8-dist\js\bootstrap.bundle.min.js' %}"></script>
+    <!-- Font Awesome Link -->
+    <link rel="stylesheet" href="{% static 'Resources/fontawesome-free-7.1.0-web/css/all.min.css' %}" />
+    <script src="{% static 'Resources\fontawesome-free-7.1.0-web\js\all.min.js' %}"></script>
 
-  <!-- Font Awesome Link -->
-  <link rel="stylesheet" href="{% static 'Resources/fontawesome-free-7.1.0-web/css/all.min.css' %}" />
-  <script src="{% static 'Resources\fontawesome-free-7.1.0-web\js\all.min.js' %}"></script>
+    <!-- Login JS -->
+    <script src="{% static 'JS/login.js' %}"></script>
+    <!-- Screen Inspect -->
+    {% comment %} <script src="{% static 'JS/screen_inspect.js' %}"></script> {% endcomment %}
 
-  <!-- Login JS -->
-  <script src="{% static 'JS/login.js' %}"></script>
+    <title>Login to | Jimiboard</title>
+  </head>
 
-  <title>Login to Jimiboard</title>
-</head>
-
-<body>
-  <div class="login-box shadow-sm rounded-3 p-2">
-    <div class="login-header d-flex justify-content-center align-items-center gap-3 p-1">
-      <div class="web-logo fs-1 d-flex justify-content-center align-items-center bg-dark text-white">J</div>
-      <span class="web-name fs-2">Jimiboard</span>
-    </div>
-
-    <div class="login-form {% if show_otp %}d-none{% else %}d-block{% endif %}">
-      <div class="text-center">
-        <p>
-          <b>Welcome back!</b> Please enter your details
-        </p>
-      </div>
-      <form action="" method="post">
-        {% csrf_token %}
-
-        <div class="input-emailornumber p-1 m-2">
-          <input type="text" class="login-input w-100 p-2" id="mORem" name="mORem" placeholder="Mobile number or email"
-            required autofocus />
-          <p id="errorMsg"
-            style="color: rgba(212, 14, 14, 0.705) !important; font-size: smaller !important; font-family: inherit !important; font-weight: 500 !important;">
-            {{ error }}</p>
+  <body>
+    <section class="d-flex justify-content-center align-item-center">
+      <div class="row container-fluid m-0 p-0">
+        <!-- Left side -->
+        <div class="col p-1 m-1 d-flex justify-content-center align-items-center flex-column position-relative" id="left-side">
+          <div class="row w-100 h-100">
+            <div class="col slider-box border p-0">
+              <div class="slider-img">
+                <img src="{% static 'Images/slider-img1.png' %}" alt="slider-img" />
+              </div>
+              <div class="slider-caption">
+                <div class="slider-caption-title text-white">
+                  <h1>Live Sharing Whiteboard</h1>
+                </div>
+                <div class="slider-caption-summaries text-white">
+                  <h5>Live Sharing Whiteboard lets teams collaborate in real time - draw, write, and brainstorm together instantly from anywhere.</h5>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <!-- Right side -->
+        <div class="col registration-box flex-column" id="registration-box">
+          <div class="row p-2 m-2">
+            <div class="col">
+              <a href="" class="brand-link d-flex align-item-center gap-2">
+                {% comment %} <img src="{% static 'Images/...' %}" alt="" /> {% endcomment %}
+                <div class="web-logo fs-1 d-flex justify-content-center align-items-center bg-dark text-white">J</div>
+                <h2 class="web-name d-flex justify-content-center align-items-center">Jimiboard</h2>
+              </a>
+            </div>
+          </div>
+          <div class="login-form" id="login-form">
+            <div class="login-title text-center fw-bold p-3 m-3">Login to Jimiboard</div>
+            <form action="#" method="post" class="d-flex justify-content-center align-items-center flex-column">
+              {% csrf_token %}
+              <div class="input-emailornumber mb-2 w-75">
+                <label for="mORem" class="form-label"><b>Welcome back!</b> Please enter your details</label>
+                <input type="text" class="login-input w-100 p-2" id="mORem" name="mORem" placeholder="Enter email" required autofocus />
+                <p class="errorMsg" style="
+                    color: rgba(212, 14, 14, 0.705) !important;
+                    font-size: smaller !important;
+                    font-family: inherit !important;
+                    font-weight: 500 !important;
+                  ">{{ error }}</p>
+              </div>
+              <div class="continue-btn p-2 m-2 w-100 d-flex justify-content-center align-items-center">
+                <button type="submit" class="btn w-75 rounded-3 p-2" id="continue" name="continue" value="continue" disabled>Continue</button>
+                <div id="login-loader" class="loader d-none"></div>
+              </div>
+              <div class="divider w-50 mb-1">
+                <div class="divider-line"></div>
+                <span>or explore with</span>
+                <div class="divider-line"></div>
+              </div>
+              <div class="googlewithsign p-1 m-2 w-75">
+                <a href="" class="google-btn p-2 fs-6">
+                  <img src="{% static 'Images/google-icon.png' %}" class="google-icon" alt="Google" />
+                  <span>Login in with Google</span>
+                </a>
+              </div>
+            </form>
+          </div>
+          <div class="code-verification d-none" id="code-verification">
+            <div class="login-title text-center fw-bold p-3 m-3">Code Verification</div>
+            <div class="d-flex justify-content-center align-items-center flex-column">
+              <div class="input-code text-center mb-2 w-75">
+                {% comment %}
+                <label for="codeInput" class="form-label">Check your&nbsp;<span class="checkMobileAndEmail"></span>and enter the verification code sent to&nbsp;<b id="checkCountryCode"></b>&nbsp;<b id="numberAndEmail"></b></label>
+                {% endcomment %}
+                <label for="codeInput" class="form-label mb-2">
+                  Check your&nbsp;<span class="checkMobileAndEmail"></span>
+                  and enter the verification code sent to&nbsp;<b id="checkCountryCode"></b>&nbsp;<b id="numberAndEmail"></b>
+                </label>
+                <input type="text" class="login-input w-100 p-2" id="codeInput" name="codeInput" placeholder="Enter verification code" />
+                <p id="errorMsg" class="text-start" style="
+                    color: rgba(212, 14, 14, 0.705) !important;
+                    font-size: smaller !important;
+                    font-family: inherit !important;
+                    font-weight: 500 !important;
+                  ">{{ error }}</p>
+              </div>
+            </div>
+            <div class="m-1 w-100 d-flex justify-content-center align-items-center flex-column">
+              <button type="button" id="resent-code-link" class="btn btn-link w-50"></button>
+              <div id="code-loader" class="loader m-1 d-none"></div>
+            </div>
+          </div>
+          <div class="user-profile w-100 d-none" id="user-profile">
+            <div class="login-title text-center fw-bold p-2 m-2">My Profile</div>
+            <div class="user-avatar-container d-flex justify-content-center align-items-center mb-4">
+              <div class="user-avatar position-relative">
+                <img id="avatarPreview" src="{% static 'Images/avatar.jpg' %}" class="shadow-sm" alt="User Avatar" />
+                <!-- Upload Button -->
+                <label for="avatarInput" class="avatar-upload-btn d-flex justify-content-center align-items-center position-absolute bottom-0 end-0"><i class="fa-solid fa-camera"></i></label>
+                <input type="file" id="avatarInput" accept="image/*" hidden />
+              </div>
 
-        <div class="continue-btn p-1 m-2">
-          <button type="submit" class="btn w-100 rounded-3 p-2" id="continue" name="continue" value="continue"
-            disabled>Continue</button>
+              {% comment %}User Avatar{% endcomment %}
+              <script>
+                document.getElementById('avatarInput').addEventListener('change', function () {
+                  const file = this.files[0]
+                  if (file) {
+                    document.getElementById('avatarPreview').src = URL.createObjectURL(file)
+                  }
+                })
+              </script>
+            </div>
+            <div class="input-username p-1 m-2 w-100 text-center mb-4">
+              <input type="text" class="login-input w-75 p-2" id="username" name="username" placeholder="Enter username" autofocus />
+            </div>
+            <div class="row">
+              <div class="col d-flex justify-content-end align-items-center">
+                <button type="button" onclick="homepage();" id="skip-btn" class="btn btn-outline-dark w-50 p-2 m-1 rounded-3">Skip</button>
+              </div>
+              <div class="col d-flex align-items-center">
+                <button type="submit" id="continue-btn" class="btn btn-dark w-50 p-2 m-1 rounded-3" disabled>Continue</button>
+                <div id="myProfile-loader" class="loader m-1 position-relative d-none" style="left: 25% !important;"></div>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div class="divider">
-          <div class="divider-line"></div>
-          <span>or explore with</span>
-          <div class="divider-line"></div>
-        </div>
-
-        <div class="googlewithsign p-1 m-2 ">
-          <a href="" class="google-btn p-2 fs-6">
-            <img src="{% static 'Images/google-icon.png' %}" class="google-icon" alt="Google" />
-            <span>Sign in with Google</span>
-          </a>
-        </div>
-      </form>
-    </div>
-
-    <div class="code-verification {% if show_otp %}d-block{% else %}d-none{% endif %}">
-      <div class="text-center">
-        <p>
-          Check your&nbsp;<span class="checkMobileAndEmail"></span>and enter the verification code sent to&nbsp;<b
-            id="checkCountryCode"></b>&nbsp;<b id="numberAndEmail"></b>
-        </p>
       </div>
-
-      <div class="code-container p-1 m-1" id="codeContainer">
-        <input type="text" class="code-input m-1" id="codeInput" placeholder="enter code" autofocus />
-      </div>
-
-      {% comment %} <div class="d-flex justify-content-between">
-        <button type="button" id="back-btn" class="btn btn-outline-dark w-100 p-1 m-2">Back</button>
-        <button type="submit" id="verify-btn" class="btn btn-dark w-100 p-1 m-2" disabled>Verify OTP</button>
-      </div> {% endcomment %}
-
-      <div class="text-center m-1">
-        <button id="back-btn" class="btn btn-link">Edit the&nbsp;<span class="checkMobileAndEmail"></span>?</button>
-      </div>
-
-      <div class="text-center m-1">
-        <button id="resent-code-link" class="btn btn-link">Resend code?</button>
-      </div>
-    </div>
-
-    <div class="user-profile d-none">
-      <div class="user-avatar-container d-flex justify-content-center align-items-center">
-        <div class="user-avatar position-relative">
-          <img id="avatarPreview" src="{% static 'Images/avatar.jpg' %}" class="shadow-sm" alt="User Avatar" />
-          <!-- Upload Button -->
-          <label for="avatarInput"
-            class="avatar-upload-btn d-flex justify-content-center align-items-center position-absolute bottom-0 end-0"><i
-              class="fa-solid fa-camera"></i></label>
-          <input type="file" id="avatarInput" accept="image/*" hidden />
-        </div>
-      </div>
-
-      {% comment %}User Avatar{% endcomment %}
-      <script>
-        document.getElementById('avatarInput').addEventListener('change', function () {
-          const file = this.files[0]
-          if (file) {
-            document.getElementById('avatarPreview').src = URL.createObjectURL(file)
-          }
-        })
-      </script>
-
-      <div class="input-username p-1 m-2">
-        <input type="text" class="login-input w-100 p-2" id="username" name="username" placeholder="Username" />
-      </div>
-
-      <div class="d-flex justify-content-between">
-        <button type="button" onclick="homepage();" id="skip-btn"
-          class="btn btn-outline-dark w-100 p-1 m-2">Skip</button>
-        <button type="submit" onclick="homepage();" id="continue-btn"
-          class="btn btn-dark w-100 p-1 m-2">Continue</button>
-      </div>
-    </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const loginForm = document.querySelector('.login-form')
-      const input = document.getElementById('mORem')
-      const btnCon = document.getElementById('continue')
-      const error = document.getElementById('errorMsg')
-      const phoneRegex = /^[6-9][0-9]{9}$/
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-      const dangerousPattern = /[<>{}()'"`;/\\]/
-      const numberAndEmail = document.getElementById('numberAndEmail')
-      const checkCountryCode = document.getElementById('checkCountryCode')
-      const checkMobileAndEmail = document.getElementsByClassName('checkMobileAndEmail')
-
-      const otpVerification = document.querySelector('.code-verification')
-      const codeInput = document.getElementById('codeInput')
-      const backBtn = document.getElementById('back-btn')
-      // const verifyBtn = document.getElementById("verify-btn");
-
-      const userProfile = document.querySelector('.user-profile')
-      const skipBtn = document.getElementById('skip-btn')
-      const continueBtn = document.getElementById('continue-btn')
-
-      input.addEventListener('input', function (e) {
-        e.preventDefault()
-        let value = input.value.trim()
-
-        btnCon.disabled = true
-        error.textContent = ''
-
-        if (dangerousPattern.test(value)) {
-          error.textContent = '• Invalid characters detected!'
-          return
+    </section>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const loginForm = document.querySelector('.login-form')
+        const input = document.getElementById('mORem')
+        const btnCon = document.getElementById('continue')
+        const btnLoginLoader = document.getElementById('login-loader')
+        const error = document.querySelector('.errorMsg')
+        const phoneRegex = /^[6-9][0-9]{9}$/
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        const dangerousPattern = /[<>{}()'"`;/\\]/
+        const numberAndEmail = document.getElementById('numberAndEmail')
+        const checkCountryCode = document.getElementById('checkCountryCode')
+        const checkMobileAndEmail = document.getElementsByClassName('checkMobileAndEmail')
+      
+        const otpVerification = document.querySelector('.code-verification')
+        const codeInput = document.getElementById('codeInput')
+        codeInput.disabled = true
+        const resendCodeBtn = document.getElementById('resent-code-link')
+        const btnCodeLoader = document.getElementById('code-loader')
+      
+        const userProfile = document.querySelector('.user-profile')
+        const userImgFile = document.getElementById('avatarInput')
+        const userUsername = document.getElementById('username')
+        userUsername.autofocus = true
+        const skipProfileBtn = document.getElementById('skip-btn')
+        const continueProfileBtn = document.getElementById('continue-btn')
+        const btnMyProfileLoader = document.getElementById('myProfile-loader')
+      
+        let timeLeft = 59
+        let isPaused = false
+      
+        function startTimer() {
+          timeLeft = 59
+          isPaused = false
+          resendCodeBtn.disabled = true
+          const otpTimer = setInterval(() => {
+            if (isPaused) return
+            timeLeft--
+            resendCodeBtn.textContent = `Code expired. Returning in 00:${timeLeft < 10 ? '0' : ''}${timeLeft} seconds`
+            if (timeLeft <= 0) {
+              clearInterval(otpTimer)
+              resendCodeBtn.disabled = false
+              codeInput.disabled = true
+      
+              // ✅ SWITCH UI
+              otpVerification.classList.add('d-none')
+              loginForm.classList.remove('d-none')
+      
+              // reset continue button & loader
+              btnCon.classList.remove('d-none')
+              btnLoginLoader.classList.add('d-none')
+            }
+          }, 1000)
         }
-
-        if (/\s/.test(value)) {
-          error.textContent = '• Spaces are not allowed.'
-          return
+      
+        function pauseTimer() {
+          isPaused = true
         }
-
-        if (/^\d+$/.test(value)) {
-          if (!phoneRegex.test(value)) {
-            error.textContent = '• Enter a valid 10-digit mobile number starting with 6-9.'
+      
+        input.addEventListener('input', function (e) {
+          e.preventDefault()
+          let value = input.value.trim()
+      
+          btnCon.disabled = true
+          error.textContent = ''
+      
+          if (dangerousPattern.test(value)) {
+            error.textContent = '• Invalid characters detected!'
             return
           }
-          error.textContent = ''
-          btnCon.disabled = false
-          return
-        }
-
-        if (value.includes('@')) {
+      
+          if (/\s/.test(value)) {
+            error.textContent = '• Spaces are not allowed.'
+            return
+          }
+      
+          // if (/^\d+$/.test(value)) {
+          //   if (!phoneRegex.test(value)) {
+          //     error.textContent = '• Enter a valid 10-digit mobile number starting with 6-9.'
+          //     return
+          //   }
+          //   error.textContent = ''
+          //   btnCon.disabled = false
+          //   return
+          // }
+      
+          if (/^\d+$/.test(value)) {
+            if (!phoneRegex.test(value)) {
+              error.textContent = '• Enter a valid email address.'
+              return
+            }
+            btnCon.disabled = true
+            return
+          }
+      
+          // if (value.includes('@')) {
+          //   if (emailRegex.test(value)) {
+          //     error.textContent = ''
+          //     btnCon.disabled = false
+          //     return
+          //   }
+          //   error.textContent = '• Enter a valid email address.'
+          //   return
+          // }
+      
           if (emailRegex.test(value)) {
-            error.textContent = ''
             btnCon.disabled = false
             return
           }
-          error.textContent = '• Enter a valid email address.'
-          return
-        }
-
-        error.textContent = '• Enter valid mobile number or email.'
+      
+          // error.textContent = '• Enter valid mobile number or email.'
+          error.textContent = '• Enter valid email.'
+        })
+      
+        btnCon.addEventListener('click', function (e) {
+          e.preventDefault()
+          let value = input.value.trim()
+          if (!confirm(`Confirm to send OTP to ${value}`)) return
+          // Show loader and disable button
+          btnCon.classList.add('d-none')
+          btnLoginLoader.classList.remove('d-none')
+          input.disabled = true
+          fetch('/login/', {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `mORem=${encodeURIComponent(value)}`
+          })
+            .then((res) => res.text())
+            .then(() => {
+              // UI change AFTER backend success
+      
+              loginForm.classList.add('d-none')
+              otpVerification.classList.remove('d-none')
+      
+              numberAndEmail.textContent = value
+              const isEmail = value.includes('@')
+              checkCountryCode.textContent = isEmail ? '' : '+91'
+      
+              for (let el of checkMobileAndEmail) {
+                el.textContent = isEmail ? 'email' : 'mobile number'
+              }
+              codeInput.disabled = false
+              codeInput.focus()
+              startTimer()
+            })
+        })
+      
+        codeInput.addEventListener('input', function (e) {
+          e.preventDefault()
+          const check_email = input.value.trim()
+          const check_code = codeInput.value.trim()
+          fetch('/verify-code/', {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `check_email=${encodeURIComponent(check_email)}&check_code=${encodeURIComponent(check_code)}`
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success === true) {
+                errorMsg.textContent = '• Code verified successfully'
+                errorMsg.style.color = 'green'
+                resendCodeBtn.classList.add('d-none')
+                btnCodeLoader.classList.remove('d-none')
+                pauseTimer()
+                // ✅ OTP verified → show profile
+                otpVerification.classList.add('d-none')
+                userProfile.classList.remove('d-none')
+              } else {
+                errorMsg.textContent = '• Invalid verification code'
+              }
+            })
+            .catch(() => {
+              errorMsg.textContent = '• Something went wrong. Try again.'
+            })
+        })
+      
+        userProfile.addEventListener('input', function (e) {
+          e.preventDefault()
+          continueProfileBtn.disabled = true
+      
+          if (userUsername.value.trim()) {
+            continueProfileBtn.disabled = false
+          }
+      
+          if (userImgFile.value.trim()) {
+            continueProfileBtn.disabled = false
+          }
+        })
+      
+        continueProfileBtn.addEventListener('click', (e) => {
+          e.preventDefault()
+          //const check_email = input.value.trim()
+          const check_email = 'jimiboard10@gmail.com'
+          // const uImgFile = userImgFile.files[0]
+          const uName = userUsername.value.trim()
+          if (!confirm(`Confirm to save data`)) return
+          continueProfileBtn.classList.add('d-none')
+          btnMyProfileLoader.classList.remove('d-none')
+          userUsername.disabled = true
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+          const profileData = new FormData()
+          profileData.append('emailID', check_email)
+          profileData.append('username', uName)
+          profileData.append('userImg', userImgFile)
+      
+          fetch('/my-profile/', {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': csrfToken
+            },
+            body: profileData
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              window.location.href = '/'
+              alert(data.message || 'Profile saved')
+            })
+            .finally(() => {
+              continueProfileBtn.disabled = false
+              userUsername.disabled = false
+              userUsername.focus()
+            })
+        })
       })
-
-      codeInput.addEventListener('paste', function (e) {
-        e.preventDefault()
-        const pasteData = e.clipboardData.getData('text').trim()
-        // const pasteData = window.clipboardData.getData("text").trim();
-        const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,}$/
-
-        if (regex.test(pasteData)) {
-          codeInput.value = pasteData
-        }
-      })
-
-      btnCon.addEventListener('click', function (e) {
-        e.preventDefault()
-        let value = input.value.trim()
-
-        const ok = confirm(`Confirm to send OTP to this ${value}`)
-        if (ok) {
-          //        numberAndEmail.textContent = value
-          //
-          //        setTimeout(() => {
-          //          loginForm.classList.add('d-none')
-          //          otpVerification.classList.remove('d-none')
-          //       }, 1000)
-          //
-          //       const isEmail = value.includes('@')
-          //       checkCountryCode.textContent = isEmail ? '' : '+91'
-          //
-          //       for (let i = 0; i < checkMobileAndEmail.length; i++) {
-          //         checkMobileAndEmail[i].textContent = isEmail ? 'email' : 'mobile number'
-          //       }
-          document.querySelector('form').submit()
-        }
-      })
-
-      backBtn.addEventListener('click', function (e) {
-        e.preventDefault()
-        setTimeout(() => {
-          loginForm.classList.remove('d-none')
-          otpVerification.classList.add('d-none')
-        }, 1000)
-      })
-
-      // verifyBtn.addEventListener("click", function (e) {
-      //   e.preventDefault();
-      //   setTimeout(() => {
-      //     otpVerification.classList.add('d-none');
-      //     userProfile.classList.remove('d-none');
-      //   }, 1000);
-      // });
-    })
-
-    function homepage() {
-      window.location.href = '/'
-    }
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

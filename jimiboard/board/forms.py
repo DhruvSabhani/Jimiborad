@@ -2,13 +2,26 @@ from .models import User
 from django.core.mail import send_mail
 from django.conf import settings
 
+# Django password hashing
+from django.contrib.auth.hashers import make_password
+
+# Django timezone for expiry time
+from django.utils import timezone
+from datetime import timedelta
+
+# Utility function to generate secure code
+from .utils import generate_ai_secure_code
+
 # DRF serializer = API validation + data handling
 # Like Django Form but for APIs
 from rest_framework import serializers
 
 # re matlab pattern check (email / mobile number valid chhe ke nahi)
 import re
-import random
+
+# email format
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 class LoginSerializer(serializers.Serializer):
@@ -37,43 +50,63 @@ class LoginSerializer(serializers.Serializer):
         login = validated_data["login"]
         login_type = self.context["login_type"]
 
-        code = str(random.randint(100000, 999999))  # 6 digit code
+        code = str(generate_ai_secure_code())
+
+        expiry = timezone.now() + timedelta(seconds=59)
 
         if login_type == "email":
             user, created = User.objects.get_or_create(
-                emailID=login, defaults={"emailID_code": code}
+                emailID=login,
+                defaults={
+                    "emailID_hash_code": make_password(code),
+                    "emailcode_expires_dt": expiry,
+                },
             )
             if not created:
-                user.emailID_code = code
+                user.emailID_hash_code = make_password(code)
+                user.emailcode_expires_dt = expiry
                 user.save()
 
             self.send_email(login, code)
 
         else:  # phone
             user, created = User.objects.get_or_create(
-                phoneNumber=login, defaults={"phoneNumber_code": code}
+                phoneNumber=login,
+                defaults={
+                    "phoneNumber_hash_code": code,
+                    "phonenumbercode_expires_dt": expiry,
+                },
             )
 
             if not created:
-                user.phoneNumber_code = code
+                user.phoneNumber_hash_code = make_password(code)
+                user.phonenumbercode_expires_dt = expiry
                 user.save()
 
             # 👉 Here you can integrate SMS API (Twilio, Fast2SMS, etc.)
 
         return user
 
-    # def send_email(self, to_email, code):
-    #     subject = "Jimiboard Login Code"
-    #     message = f"Your login verification code is: {code}"
-    #     send_mail(
-    #         subject,
-    #         message,
-    #         settings.EMAIL_HOST_USER,
-    #         [to_email],
-    #         fail_silently=False,
-    #     )
     def send_email(self, login, code):
+
         subject = "Jimiboard Login Code"
-        message = f"Your login verification code is: {code}"
+
+        html_message = render_to_string(
+            "email/mail_design.html",
+            {
+                "code": code,
+            },
+        )
+
+        plain_message = strip_tags(html_message)
+
+        # message = f"Your login verification code is: {code}"
         to = [login]
-        send_mail(subject, message, settings.EMAIL_HOST_USER, to, fail_silently=False)
+        send_mail(
+            subject,
+            plain_message,
+            settings.EMAIL_HOST_USER,
+            [login],
+            html_message=html_message,
+            fail_silently=False,
+        )
