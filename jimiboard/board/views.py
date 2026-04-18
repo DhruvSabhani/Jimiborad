@@ -76,6 +76,6 @@ def my_profile(request):
 
     user.username = username
     user.userImg = user_img
-
     user.save()
+
     return JsonResponse({"success": True, "message": "Profile saved"})
